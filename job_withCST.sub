@@ -1,0 +1,23 @@
+executable = run_withCST.sh
+arguments  = $(sample) $(train) $(test) $(beta)
+
+output = /dev/null
+error  = logs/job_$(sample)_$(beta).err
+log    = logs/job_$(sample)_$(beta).log
+
++PreGPURequirements = (TARGET.Arch == "X86_64") && (TARGET.OpSys == "LINUX") && (TARGET.HasFileTransfer)
+
+request_GPUs   = 1
++GPUJob        = true
++MaxRuntime    = 214300
+request_cpus   = 1
+request_memory = 34 GB
+request_disk   = 0.5 GB
+getenv         = True
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+
+transfer_output_files = 
+
+queue sample, train, test, beta from params_withCST.txt
